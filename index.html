@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>표선 영숙이네 소숯불구이</title>
+    
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Pretendard', '-apple-system', 'sans-serif'],
+                        serif: ['"Noto Serif KR"', 'serif'],
+                    },
+                    colors: {
+                        brand: { 50: '#fff7ed', 100: '#ffedd5', 500: '#f97316', 600: '#ea580c', 900: '#7c2d12' }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- AOS Animate On Scroll -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- React & ReactDOM (CDN) -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Babel (CDN) -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        body { background-color: #18181b; color: #f4f4f5; word-break: keep-all; overflow-x: hidden; }
+        html { scroll-behavior: smooth; }
+        .text-glow { text-shadow: 0 0 20px rgba(234, 88, 12, 0.5); }
+        .kakao-bg { background-color: #FEE500; color: #191919; }
+        .kakao-bg:hover { background-color: #FDD800; }
+        .container-mobile { width: 100%; max-width: 100vw; padding-left: 1rem; padding-right: 1rem; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const Icon = ({ name, size = 24, className = "" }) => {
+            return <i data-lucide={name} style={{ width: size, height: size, display: 'inline-block' }} className={className}></i>;
+        };
+
+        function RestaurantPage() {
+            useEffect(() => {
+                AOS.init({ duration: 800, once: false, offset: 50 });
+                lucide.createIcons();
+            });
+
+            // 대표님이 직접 촬영하신 사진과 가격표 기준 실제 메뉴 데이터 배열
+            const menuItems = [
+                { id: 1, name: '소모듬', price: '39,000원', desc: '토시살, 갈비살, 부채살 3가지 특수부위를 한 번에 즐기는 모둠', img: './images/소모듬(토시살,갈비살,부채살).png', tag: '대표' },
+                { id: 2, name: '양념늑간살', price: '14,000원', desc: '비법 양념장으로 정성껏 숙성하여 쫄깃하고 달큰한 맛이 일품입니다.', img: './images/양념늑간살.png', tag: '대표' },
+                { id: 3, name: '돼지양념갈비 300g', price: '13,000원', desc: '달콤 짭짤한 특제 양념이 고기 속까지 깊게 밴 푸짐한 돼지갈비', img: './images/양념돼지고기.png', tag: '대표' },
+                { id: 4, name: '살치살', price: '15,000원', desc: '눈꽃처럼 피어난 마블링이 입안에서 사르르 녹는 프리미엄 부위', img: './images/살치살.png', tag: '' },
+                { id: 5, name: '갈빗살', price: '14,000원', desc: '참숯 화력에 구워 육즙을 꽉 가둔 영숙이네 부동의 베스트셀러', img: './images/갈빗살.png', tag: '' },
+                { id: 6, name: '토시살', price: '14,000원', desc: '소 한 마리에서 극소량만 나오는 쫄깃하고 진한 육향의 특수 부위', img: './images/토시살.png', tag: '' },
+                { id: 7, name: '부채살', price: '14,000원', desc: '가운데 힘줄의 쫀득한 식감과 감칠맛이 살아있는 부드러운 고기', img: './images/부채살.png', tag: '' },
+                { id: 8, name: '육회 200g', price: '20,000원', desc: '매일매일 신선한 생고기를 정성껏 버무려 고소함이 극대화된 육회', img: './images/육회.png', tag: '' },
+                { id: 9, name: '계란찜', price: '4,000원', desc: '테이블에 오르는 순간 시선을 뺏는 푸짐하고 부드러운 식감', img: './images/폭탄계란찜.png', tag: '' },
+                { id: 10, name: '추가 된장찌개', price: '3,000원', desc: '기본으로 제공되는 찌개를 다 드시고 추가하실 때 주문해주세요.', img: './images/된장찌게.png', tag: '기본제공' }
+            ];
+
+            return (
+                <div className="min-h-screen font-sans w-full overflow-hidden">
+                    
+                    {/* Header */}
+                    <header className="fixed top-0 w-full z-50 transition-all bg-zinc-900/95 backdrop-blur-md border-b border-zinc-800 shadow-xl">
+                        <div className="max-w-6xl mx-auto px-4 sm:px-5 h-16 sm:h-20 flex items-center justify-between">
+                            <div className="flex items-center gap-2 sm:gap-3 cursor-pointer" onClick={() => window.scrollTo(0,0)}>
+                                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-brand-600 flex items-center justify-center text-white shadow-lg shadow-brand-500/30">
+                                    <Icon name="flame" size={16} className="sm:hidden" />
+                                    <Icon name="flame" size={20} className="hidden sm:inline-block" />
+                                </div>
+                                <span className="text-xl sm:text-2xl font-serif font-black tracking-tight text-white mt-1">영숙이네</span>
+                            </div>
+                            <div className="hidden md:flex items-center gap-8 text-zinc-300 font-medium">
+                                <a href="#about" className="hover:text-brand-500 transition-colors">매장소개</a>
+                                <a href="#menu" className="hover:text-brand-500 transition-colors">전체메뉴</a>
+                                <a href="#location" className="hover:text-brand-500 transition-colors">오시는길</a>
+                            </div>
+                            <div>
+                                <a href="tel:0507-1367-0822" className="bg-brand-600 hover:bg-brand-500 text-white px-4 sm:px-6 py-2 sm:py-2.5 rounded-full font-bold text-sm sm:text-base transition-all shadow-lg flex items-center gap-1.5">
+                                    <Icon name="phone" size={16} /> 예약
+                                </a>
+                            </div>
+                        </div>
+                    </header>
+
+                    {/* Hero Section */}
+                    <section className="relative min-h-[100svh] flex flex-col items-center justify-center overflow-hidden pb-16 pt-24">
+                        <div className="absolute inset-0 bg-zinc-950">
+                            {/* 대표님이 지시한 화로불 기본형 이미지 */}
+                            <img src="https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&q=80&w=2000" alt="참숯 숯불 배경" className="w-full h-full object-cover opacity-35 mix-blend-luminosity brightness-75" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-900/60 to-zinc-900/80"></div>
+                        </div>
+                        
+                        <div className="relative z-10 text-center container-mobile max-w-5xl mx-auto w-full flex flex-col items-center justify-center h-full" data-aos="fade-up">
+                            <div className="inline-flex items-center gap-2 border border-brand-500/50 bg-brand-500/20 text-brand-300 px-4 py-1.5 rounded-full text-xs sm:text-sm font-bold tracking-widest mb-6 shadow-[0_0_15px_rgba(234,88,12,0.3)] backdrop-blur-sm">
+                                <Icon name="map-pin" size={14} /> 제주 서귀포 표선 현지인 맛집 1위
+                            </div>
+                            <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-serif font-black text-white leading-[1.15] mb-6 text-glow w-full break-keep px-2">
+                                제주의 정(情)을<br/>가득 굽다.
+                            </h1>
+                            <p className="text-lg sm:text-xl md:text-2xl text-zinc-300 mb-10 sm:mb-14 font-serif font-light tracking-wide leading-relaxed px-4 break-keep">
+                                표선 최고 가성비의 신선한 소고기 특수부위 모둠,<br className="hidden md:block"/>
+                                가족같은 따뜻함이 있는 <strong className="text-brand-400">영숙이네 소숯불구이</strong>
+                            </p>
+                            
+                            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto px-4 sm:px-0">
+                                <a href="http://pf.kakao.com/_CxmTun/chat" target="_blank" rel="noreferrer" className="kakao-bg w-full sm:w-auto px-6 sm:px-10 py-5 sm:py-6 rounded-2xl font-extrabold text-lg sm:text-xl shadow-[0_10px_30px_rgba(254,229,0,0.2)] transition-all hover:-translate-y-2 flex items-center justify-center gap-3 active:scale-95">
+                                    <Icon name="message-circle" size={28} /> 채널 예약
+                                </a>
+                                <a href="tel:0507-1367-0822" className="bg-brand-600 hover:bg-brand-500 text-white w-full sm:w-auto px-6 sm:px-10 py-5 sm:py-6 rounded-2xl font-extrabold text-lg sm:text-xl shadow-[0_10px_30px_rgba(234,88,12,0.3)] transition-all hover:-translate-y-2 flex items-center justify-center gap-3 active:scale-95">
+                                    <Icon name="phone-call" size={28} /> 통화 문의
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-zinc-400 animate-bounce cursor-pointer z-10" onClick={() => window.location.href='#about'}>
+                            <Icon name="chevron-down" size={32} />
+                        </div>
+                    </section>
+
+                    {/* About Section */}
+                    <section id="about" className="py-20 sm:py-24 px-4 sm:px-5 bg-zinc-900 border-t border-zinc-800 relative z-10 break-keep">
+                        <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
+                            <h4 className="text-brand-500 font-bold mb-4 tracking-widest text-xs sm:text-sm bg-brand-500/10 px-3 py-1 rounded w-fit uppercase mx-auto border border-brand-500/20">Our Story</h4>
+                            <h2 className="text-3xl sm:text-5xl font-serif font-bold text-white mb-6 leading-[1.3]">
+                                이름을 걸고 대접하는<br className="sm:hidden" /> 제주의 진짜 로컬 맛집
+                            </h2>
+                            <p className="text-zinc-400 text-base sm:text-lg md:text-xl leading-relaxed">
+                                과거 '미도파'라는 이름으로 시작해, 정겹고 친근한 <strong>'영숙이네'</strong>로 새롭게 인사드립니다.<br/><br className="hidden sm:block"/>
+                                가족끼리, 친구끼리 누구나 든든하게 배불리 드실 수 있는 <strong>특수부위 소고기와 돼지양념갈비</strong>를 정직하게 올립니다.<br/>
+                                잊을 수 없는 <strong>특제 파무침</strong>과 친절한 서비스로 제주 표선 방문객들의 후회없는 식사를 약속합니다.
+                            </p>
+                        </div>
+                    </section>
+
+                    {/* Menu Section - 실제 전달해주신 이미지와 가격표 연동 */}
+                    <section id="menu" className="py-20 sm:py-24 px-4 sm:px-5 bg-zinc-950 relative border-t border-zinc-800">
+                        <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 pointer-events-none"></div>
+                        <div className="max-w-6xl mx-auto relative z-10">
+                            <div className="text-center mb-16 sm:mb-20" data-aos="fade-up">
+                                <Icon name="flame" size={32} className="mx-auto text-brand-500 mb-4 sm:mb-6" />
+                                <h2 className="text-3xl sm:text-5xl font-serif font-bold text-white mb-4">전체 메뉴안내</h2>
+                                <p className="text-zinc-400 text-sm sm:text-lg break-keep">정직한 가격과 최고의 품질로 모십니다.</p>
+                            </div>
+                            
+                            {/* 동적 렌더링을 통한 전체 10개 메뉴 격자 생성 */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                                {menuItems.map((item, index) => (
+                                    <div key={item.id} data-aos="fade-up" data-aos-delay={(index % 4) * 50} className="group rounded-3xl overflow-hidden bg-zinc-900 border border-zinc-800 transition-all hover:border-brand-500/50 hover:shadow-[0_0_20px_rgba(234,88,12,0.2)] flex flex-col h-full bg-zinc-900 border border-zinc-800">
+                                        <div className="h-56 relative border-b border-zinc-800 overflow-hidden bg-zinc-950">
+                                            <img 
+                                                src={item.img} 
+                                                alt={item.name} 
+                                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100" 
+                                            />
+                                            {item.tag && (
+                                                <div className={`absolute top-4 right-4 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-md z-20 ${item.tag === '대표' ? 'bg-brand-600' : 'bg-green-600'}`}>
+                                                    {item.tag}
+                                                </div>
+                                            )}
+                                        </div>
+                                        <div className="p-5 sm:p-6 flex flex-col flex-1 bg-zinc-900">
+                                            <div className="flex justify-between items-start mb-2 gap-2">
+                                                <h3 className="text-xl font-bold font-serif text-white truncate">{item.name}</h3>
+                                                <span className="text-lg font-black text-brand-400 shrink-0">{item.price}</span>
+                                            </div>
+                                            <p className="text-zinc-400 text-sm leading-relaxed mt-1 break-keep">{item.desc}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+                    
+                    {/* Info & Location & Big Contact Buttons */}
+                    <section id="location" className="py-24 sm:py-32 px-4 sm:px-5 bg-zinc-900 relative border-t border-zinc-800">
+                        <div className="max-w-6xl mx-auto relative z-10 w-full">
+                            
+                            <div className="text-center mb-12 sm:mb-16" data-aos="fade-up">
+                                <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-white mb-4 sm:mb-6">초간편 방문 예약</h2>
+                                <p className="text-zinc-400 text-sm sm:text-lg px-2 break-keep">기다림 없이 바로 맛보실 수 있도록 세팅해 드립니다.</p>
+                            </div>
+
+                            <div className="flex flex-col md:flex-row gap-5 sm:gap-6 justify-center mb-16 sm:mb-20 w-full" data-aos="zoom-in">
+                                <a href="tel:0507-1367-0822" className="bg-zinc-800 border border-zinc-700 text-white w-full md:w-[45%] flex-1 p-8 sm:p-10 rounded-3xl flex flex-col items-center justify-center gap-3 sm:gap-4 shadow-xl active:scale-95 transition-transform">
+                                    <div className="bg-brand-600 p-4 sm:p-5 rounded-full shadow-[0_0_20px_rgba(234,88,12,0.5)]"><Icon name="phone" size={36} className="text-white sm:w-12 sm:h-12" /></div>
+                                    <span className="text-zinc-400 font-medium tracking-widest mt-1 text-xs sm:text-sm">매장 다이렉트 전화</span>
+                                    <span className="text-3xl sm:text-4xl md:text-5xl font-black font-sans tracking-tight text-white mb-1">0507-1367-0822</span>
+                                    <span className="text-brand-400 text-xs sm:text-sm font-bold bg-brand-900/30 border border-brand-500/20 px-3 py-1.5 rounded-lg max-w-full truncate">16:00 ~ 23:59 상담가능</span>
+                                </a>
+
+                                <a href="http://pf.kakao.com/_CxmTun/chat" target="_blank" rel="noreferrer" className="bg-[#FAE100] text-black w-full md:w-[45%] flex-1 p-8 sm:p-10 rounded-3xl flex flex-col items-center justify-center gap-3 sm:gap-4 shadow-xl active:scale-95 transition-transform border-b-4 border-[#D4C300]">
+                                    <div className="bg-black/10 p-4 sm:p-5 rounded-2xl"><Icon name="message-circle" size={36} className="text-black/80 sm:w-12 sm:h-12" /></div>
+                                    <span className="text-black/60 font-medium tracking-widest mt-1 text-xs sm:text-sm">부담 없는 채팅 문의</span>
+                                    <span className="text-3xl sm:text-4xl md:text-5xl font-black font-sans tracking-tight text-black mb-1">카카오톡 예약</span>
+                                    <span className="text-black/70 text-xs sm:text-sm font-bold bg-black/5 px-3 py-1.5 rounded-lg max-w-full truncate border border-black/10">휴대폰에서 1초 만에 문의하기</span>
+                                </a>
+                            </div>
+
+                            <div className="flex flex-col lg:flex-row gap-6 sm:gap-12 mt-10">
+                                <div data-aos="fade-up" className="bg-zinc-800 p-6 sm:p-10 rounded-3xl border border-zinc-700 shadow-xl w-full lg:w-1/3">
+                                    <h3 className="text-xl sm:text-2xl font-bold font-serif text-white mb-6 sm:mb-8 border-b border-zinc-700 pb-4">매장 정보</h3>
+                                    <div className="space-y-6 sm:space-y-8">
+                                        <div className="flex gap-4 items-start">
+                                            <Icon name="map-pin" className="text-brand-500 shrink-0 mt-1" />
+                                            <div>
+                                                <h4 className="font-bold text-white mb-1.5 text-[15px] sm:text-base">오시는 길</h4>
+                                                <p className="text-zinc-400 leading-relaxed text-sm sm:text-[15px] break-keep">제주특별자치도 서귀포시 표선면 표선동서로 254-12<br/><span className="text-brand-400 mt-1 block">★ 국수마당 바로 옆 골목 안에 있습니다.</span></p>
+                                            </div>
+                                        </div>
+                                        <div className="flex gap-4 items-start">
+                                            <Icon name="clock" className="text-brand-500 shrink-0 mt-1" />
+                                            <div>
+                                                <h4 className="font-bold text-white mb-1.5 text-[15px] sm:text-base">영업 시간</h4>
+                                                <p className="text-zinc-400 text-sm sm:text-[15px]">평일/주말: 16:00 ~ 23:59</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div data-aos="fade-up" className="w-full lg:w-2/3 h-[300px] sm:h-[400px] rounded-3xl overflow-hidden shadow-2xl border border-zinc-700 relative group bg-zinc-800 flex flex-col items-center justify-center p-4">
+                                    <Icon name="map-unpinned" size={48} className="text-white mb-3 sm:mb-4 drop-shadow-lg sm:w-16 sm:h-16" />
+                                    <h3 className="text-2xl sm:text-3xl font-bold text-white mb-4 sm:mb-6 text-center break-keep">정확한 길 안내 받기</h3>
+                                    <a href="https://naver.me/FRLH53H9" target="_blank" rel="noreferrer" className="bg-[#03C75A] text-white px-6 sm:px-8 py-3.5 sm:py-4 rounded-full font-bold shadow-xl transition-transform active:scale-95 flex items-center gap-2 text-sm sm:text-lg">
+                                        네이버 지도로 앱 열기 <Icon name="chevron-right" size={18}/>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Footer */}
+                    <footer className="bg-black py-12 sm:py-16 px-4 sm:px-5 text-zinc-500 text-xs sm:text-[13px] md:text-sm border-t border-zinc-900 break-keep">
+                        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 sm:gap-8 text-center md:text-left">
+                            <div>
+                                <span className="text-xl sm:text-2xl font-serif font-black text-white block mb-4 sm:mb-5 tracking-wide">영숙이네 소숯불구이</span>
+                                <div className="leading-relaxed space-y-1">
+                                    제주특별자치도 서귀포시 표선면 표선동서로 254-12<br/>
+                                    빠른 문의 및 예약: <strong className="text-zinc-300">0507-1367-0822</strong><br/>
+                                </div>
+                            </div>
+                            <div className="md:text-right flex flex-col items-center md:items-end">
+                                <div className="mb-4">
+                                    <span className="block mb-1 text-zinc-400">지인과 함께하는 따뜻한 식사, 표선 영숙이네</span>
+                                    <span className="block">Copyright © 표선 영숙이네 소숯불구이. All rights reserved.</span>
+                                </div>
+                                								<a href="https://adopter.co.kr" target="_blank" rel="noopener noreferrer" className="inline-block bg-zinc-900 px-3 py-1.5 rounded-md text-zinc-600 text-[11px] font-bold border border-zinc-800 hover:text-zinc-400 transition-colors">
+  Powered by adopter.co.kr
+</a>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<RestaurantPage />);
+    </script>
+</body>
+</html>
